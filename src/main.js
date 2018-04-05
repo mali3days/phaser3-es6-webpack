@@ -27,39 +27,19 @@ const config = {
       debug: false
     }
   },
-  scene: {
-    preload,
-    create,
-    update
-  }
+  scene: getState()
 }
 
+let stars
+let bombs
 let player
 let cursors
-let platforms
-let stars
+let gameOver
 let score = 0
 let scoreText
-let bombs
-let gameOver
+let platforms
 
-function preload () {
-  const {
-    img,
-    spr,
-    base
-  } = global
-
-  for (let i in img) this.load.image(`${img[i]}`, `${base}/${img[i]}.png`)
-  for (let i in spr) {
-    this.load.spritesheet(`${spr[i]}`, `${base}/${spr[i]}.png`, {
-      frameWidth: 32,
-      frameHeight: 48
-    })
-  }
-}
-
-function collectStar (player, star) {
+const collectStar = (player, star) => {
   star.disableBody(true, true)
 
   score += 10
@@ -80,109 +60,129 @@ function collectStar (player, star) {
   }
 }
 
-function hitBomb (player, bomb) {
+const hitBomb = (player, bomb) => {
   this.physics.pause()
   player.setTint(0xff0000)
   player.anims.play('turn')
-  // gameOver = true
+  gameOver = true
 }
 
-function create () {
-  const {
-    sky
-    /* , star */
-  } = global.img
+function getState () {
+  return {
+    // init () {
+    // },
+    preload () {
+      const {
+        img,
+        spr,
+        base
+      } = global
 
-  this.add.image(400, 300, sky)
+      for (let i in img) this.load.image(`${img[i]}`, `${base}/${img[i]}.png`)
+      for (let i in spr) {
+        this.load.spritesheet(`${spr[i]}`, `${base}/${spr[i]}.png`, {
+          frameWidth: 32,
+          frameHeight: 48
+        })
+      }
+    },
 
-  platforms = this.physics.add.staticGroup()
-  platforms.create(400, 568, 'ground').setScale(2).refreshBody()
-  platforms.create(600, 400, 'ground')
-  platforms.create(50, 250, 'ground')
-  platforms.create(750, 220, 'ground')
+    create () {
+      const {
+        sky
+      /* , star */
+      } = global.img
 
-  player = this.physics.add.sprite(100, 450, 'dude')
-  player.setBounce(0.2)
-  player.setCollideWorldBounds(true)
-  this.anims.create({
-    key: 'left',
-    frames: this.anims.generateFrameNumbers('dude', {
-      start: 0,
-      end: 3
-    }),
-    frameRate: 10,
-    repeat: -1
-  })
-  this.anims.create({
-    key: 'turn',
-    frames: [{
-      key: 'dude',
-      frame: 4
-    }],
-    frameRate: 20
-  })
-  this.anims.create({
-    key: 'right',
-    frames: this.anims.generateFrameNumbers('dude', {
-      start: 5,
-      end: 8
-    }),
-    frameRate: 10,
-    repeat: -1
-  })
+      this.add.image(400, 300, sky)
 
-  this.physics.add.collider(player, platforms)
+      platforms = this.physics.add.staticGroup()
+      platforms.create(400, 568, 'ground').setScale(2).refreshBody()
+      platforms.create(600, 400, 'ground')
+      platforms.create(50, 250, 'ground')
+      platforms.create(750, 220, 'ground')
 
-  cursors = this.input.keyboard.createCursorKeys()
+      player = this.physics.add.sprite(100, 450, 'dude')
+      player.setBounce(0.2)
+      player.setCollideWorldBounds(true)
+      this.anims.create({
+        key: 'left',
+        frames: this.anims.generateFrameNumbers('dude', {
+          start: 0,
+          end: 3
+        }),
+        frameRate: 10,
+        repeat: -1
+      })
+      this.anims.create({
+        key: 'turn',
+        frames: [{
+          key: 'dude',
+          frame: 4
+        }],
+        frameRate: 20
+      })
+      this.anims.create({
+        key: 'right',
+        frames: this.anims.generateFrameNumbers('dude', {
+          start: 5,
+          end: 8
+        }),
+        frameRate: 10,
+        repeat: -1
+      })
 
-  stars = this.physics.add.group({
-    key: 'star',
-    repeat: 11,
-    setXY: { x: 12, y: 0, stepX: 70 }
-  })
+      this.physics.add.collider(player, platforms)
 
-  stars.children.iterate((child) => {
-    child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8))
-  })
+      cursors = this.input.keyboard.createCursorKeys()
 
-  this.physics.add.collider(stars, platforms)
+      stars = this.physics.add.group({
+        key: 'star',
+        repeat: 11,
+        setXY: { x: 12, y: 0, stepX: 70 }
+      })
 
-  this.physics.add.overlap(player, stars, collectStar, null, this)
+      stars.children.iterate((child) => {
+        child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8))
+      })
 
-  scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#000' })
+      this.physics.add.collider(stars, platforms)
 
-  bombs = this.physics.add.group()
+      this.physics.add.overlap(player, stars, collectStar, null, this)
 
-  this.physics.add.collider(bombs, platforms)
+      scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#000' })
 
-  this.physics.add.collider(player, bombs, hitBomb, null, this)
+      bombs = this.physics.add.group()
+
+      this.physics.add.collider(bombs, platforms)
+
+      this.physics.add.collider(player, bombs, hitBomb, null, this)
+    },
+
+    update () {
+      if (gameOver) {
+        return null
+      }
+      if (cursors.left.isDown) {
+        player.setVelocityX(-160)
+
+        player.anims.play('left', true)
+      } else if (cursors.right.isDown) {
+        player.setVelocityX(160)
+
+        player.anims.play('right', true)
+      } else {
+        player.setVelocityX(0)
+
+        player.anims.play('turn')
+      }
+
+      if (cursors.up.isDown && player.body.touching.down) {
+        player.setVelocityY(-330)
+      }
+    }
+  }
 }
 
-function update () {
-  // console.log('update')
-  if (gameOver) {
-    return null
-  }
-  if (cursors.left.isDown) {
-    player.setVelocityX(-160)
-
-    player.anims.play('left', true)
-  } else if (cursors.right.isDown) {
-    player.setVelocityX(160)
-
-    player.anims.play('right', true)
-  } else {
-    player.setVelocityX(0)
-
-    player.anims.play('turn')
-  }
-
-  if (cursors.up.isDown && player.body.touching.down) {
-    player.setVelocityY(-330)
-  }
-}
-
-// eslint-disable-next-line
 const game = new Phaser.Game(config)
 
 game.global = global
