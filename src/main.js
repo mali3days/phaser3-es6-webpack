@@ -60,7 +60,8 @@ const collectStar = (player, star) => {
   }
 }
 
-const hitBomb = (player, bomb) => {
+function hitBomb (player, bomb) {
+  console.log(this)
   this.physics.pause()
   player.setTint(0xff0000)
   player.anims.play('turn')
