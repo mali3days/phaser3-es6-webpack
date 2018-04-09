@@ -43,4 +43,4 @@ Run:
 This will optimize and minimize the compiled bundle.
 
 ## Phaser 3:
-[docs](https://photonstorm.github.io/phaser3-docs/index.html):
+[docs](https://photonstorm.github.io/phaser3-docs/index.html)
