@@ -44,3 +44,10 @@ This will optimize and minimize the compiled bundle.
 
 ## Phaser 3:
 [docs](https://photonstorm.github.io/phaser3-docs/index.html)
+
+## Learn Phaser
+
+1. https://github.com/mali3days/HTML5-Cross-Platform-Game-Development-Using-Phaser-3
+2. https://gamedevacademy.org/wp-content/uploads/2018/04/How-to-Create-a-Game-with-Phaser-3_v2.pdf
+3. Phaser.js Game Design Workbook (Stephen Gose)
+4. https://www.youtube.com/results?search_query=Phaser+3
