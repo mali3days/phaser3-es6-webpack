@@ -25,7 +25,7 @@ or if you choose yarn, just run ```yarn```
 
 Run:
 
-```npm run dev```
+```npm start```
 
 This will run a server so you can run the game in a browser.
 
