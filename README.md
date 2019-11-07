@@ -47,7 +47,8 @@ This will optimize and minimize the compiled bundle.
 
 ## Learn Phaser
 
-1. https://github.com/mali3days/HTML5-Cross-Platform-Game-Development-Using-Phaser-3
-2. https://gamedevacademy.org/wp-content/uploads/2018/04/How-to-Create-a-Game-with-Phaser-3_v2.pdf
-3. Phaser.js Game Design Workbook (Stephen Gose)
+1. https://phaser.io/tutorials/getting-started-phaser3
+2. https://github.com/mali3days/HTML5-Cross-Platform-Game-Development-Using-Phaser-3
+3. https://gamedevacademy.org/wp-content/uploads/2018/04/How-to-Create-a-Game-with-Phaser-3_v2.pdf
 4. https://www.youtube.com/results?search_query=Phaser+3
+5. Phaser.js Game Design Workbook (Stephen Gose)
